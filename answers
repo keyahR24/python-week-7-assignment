@@ -1,0 +1,47 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+# Load the dataset
+iris_data = load_iris()
+df = pd.DataFrame(data=iris_data.data, columns=iris_data.feature_names)
+df['species'] = pd.Categorical.from_codes(iris_data.target, iris_data.target_names)
+
+# Inspect the data
+print(df.head())
+print(df.dtypes)
+print(df.isnull().sum())
+
+# Clean the dataset (if necessary)
+df.dropna(inplace=True)
+
+# Basic Data Analysis
+print(df.describe())
+
+# Group by species and calculate mean
+grouped = df.groupby('species').mean()
+print(grouped)
+
+# Data Visualization
+# 1. Bar Chart for average sepal length by species
+grouped['sepal length (cm)'].plot(kind='bar', color='skyblue')
+plt.title('Average Sepal Length by Species')
+plt.xlabel('Species')
+plt.ylabel('Average Sepal Length (cm)')
+plt.show()
+
+# 2. Histogram for sepal length
+df['sepal length (cm)'].hist(color='lightgreen')
+plt.title('Distribution of Sepal Length')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Frequency')
+plt.show()
+
+# 3. Scatter Plot for sepal length vs petal length
+plt.scatter(df['sepal length (cm)'], df['petal length (cm)'], color='purple')
+plt.title('Relationship between Sepal and Petal Length')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Petal Length (cm)')
+plt.show()
+
+# Note: Line chart is not included as the Iris dataset does not contain time-series data.
